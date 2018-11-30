@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Lottery</title>
+    <link rel="shortcut icon" type="image/png" href="res/icons/etherdrop.png">
+
+    <!-- styles and font as start -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="libs/fa/fa-5.2.0.css">
+    <link type="text/css" rel="stylesheet" href="libs/materialize/css/materialize.min.css" />
+    <link type="text/css" rel="stylesheet" href="css/app.css" />
+    <link type="text/css" rel="stylesheet" href="css/scrollbar.css" />
+</head>
+
+<body class="my-dark lighten-1">
+
+    <!-- background -->
+    <div class="m-background"></div>
+
+    <!-- Audios -->
+    <audio id="coin-sound">
+        <source src="res/coins.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- navigation -->
+    <header style="zoom: 0.85">
+        <div id="intro-container" class="row waves-effect waves-block waves-ripple white-text blue darken-1" style="text-align: center; margin: 0;">
+            <div>
+                <i style="text-align: right; padding: 0 16px 8px 0; float:right;" class="fa fa-times" id="close-banner"></i>
+                <h5 class="line-h40">
+                    <b>Etherdrop</b>
+                    <small>Your Big Chance Ethereum Drop Lottery</small>
+                </h5>
+
+                <span>
+                    <i class="fa fa-fw fa-hand-point-right"></i>
+                    Drop Tiny ETHER now and get a rare chance to win a big Jackpot
+                    <i class="fa fa-fw fa-trophy"></i>
+                </span>
+
+                <h6 id="block_hash" class="line-h40 font-w400"></h6>
+            </div>
+        </div>
+
+        <div id="navbar-container">
+            <nav>
+                <div class="nav-wrapper">
+                    <a href="javascript:location.reload()">
+                        <span>
+                            <img src="res/icons/etherdrop-white-64.png" style="vertical-align: middle;">
+                            <span class="m-nav-title">Etherdrop</span>
+                        </span>
+                    </a>
+                    <ul class="right">
+                        <li>
+                            <a href="javascript:void(0)" data-target="modal-account" class="modal-trigger waves-effect btn btn-floating">
+                                <i class="material-icons">face</i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" data-target="modal-assistant" class="modal-trigger waves-effect btn btn-floating">
+                                <i class="material-icons">assistant</i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <ul class="sidenav" id="mobile-nav" style="z-index:9999999">
+            <li>
+                <a href="javascript:void(0)" data-target="modal-account" class="modal-trigger mobile">
+                    <i class="fa fa-fw fa-user"></i>Account
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)" data-target="modal-assistant" class="modal-trigger mobile">
+                    <i class="fa fa-fw fa-info"></i>Help
+                </a>
+            </li>
+        </ul>
+    </header>
+
+    <main style="zoom: 0.9">
+        <!-- container -->
+        <div id="cards-container" class="container" style="margin-top: 45px">
+
+            <!-- progress dialog -->
+            <div id="loader" class="progress right" style="height:2px; width: 100%;margin-top: -1rem;">
+                <div class="indeterminate"></div>
+            </div>
+
+            <!-- cards -->
+            <div id="rolls" class="row">
+                <div class="col s12 m12 l4">
+                    <div class="card">
+                        <div class="card-title blue white-text" style="padding:6px;font-size:1.4em">
+                            <b id="round-number">&nbsp;# Round ?</b>
+                            <i class="fas fa-tint right fa-fw" style="font-size:1em;padding: 6px 8px 0 0"></i>
+                        </div>
+                        <div class="card-content" style="height: 400px">
+                            <p>
+                                <i class="fa fa-dot-circle"></i><span id="draw-number"></span><br>
+                                <i class="fa fa-dot-circle"></i> Waiting Full Drop<br>
+                                <i class="fa fa-dot-circle"></i> Winner Profit <b id="win-profit">?</b><br><br>
+                            </p>
+
+                            <span class="left"><b id="round_progress">? / ?</b></span>
+                            <span class="right"><i class="fa fa-users"></i></span>
+
+                            <div id="banner" class="center-align">
+                                <svg id="droplet" class="shadow" style="width: 100px;margin-left: -40px" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                    xml:space="default">
+                                    <defs>
+                                        <clipPath id="drop">
+                                            <path d="M72.0090545654297 10.394125366210943c0 0-46.8 53.175000000000004-46.8 93.525 0 24.224999999999998 21 43.8 46.8 43.8s46.8-19.65 46.8-43.8C118.88405456542966 63.569125366210926 72.08405456542968 10.394125366210943 72.0090545654297 10.394125366210943z">
+                                            </path>
+                                        </clipPath>
+                                    </defs>
+                                    <g clip-path="url(#drop)" transform="scale(1), translate(-22,0)">
+                                        <g class="fill">
+                                            <path id="waveShape" d="M300,300V2.5c0,0-0.6-0.1-1.1-0.1c0,0-25.5-2.3-40.5-2.4c-15,0-40.6,2.4-40.6,2.4 c-12.3,1.1-30.3,1.8-31.9,1.9c-2-0.1-19.7-0.8-32-1.9c0,0-25.8-2.3-40.8-2.4c-15,0-40.8,2.4-40.8,2.4c-12.3,1.1-30.4,1.8-32,1.9 c-2-0.1-20-0.8-32.2-1.9c0,0-3.1-0.3-8.1-0.7V300H300z">
+                                            </path>
+                                        </g>
+                                    </g>
+                                    <g transform="scale(0.75), translate(0,6)">
+                                        <path class="droplet-stroke" d="M68.2,6.7c0,0-62.4,70.9-62.4,124.7c0,32.3,28,58.4,62.4,58.4s62.4-26.2,62.4-58.4 C130.7,77.6,68.3,6.7,68.2,6.7z">
+                                        </path>
+                                    </g>
+                                </svg>
+                            </div>
+
+                            <div>
+                                <i class="far fa-grin-beam-sweat"></i> <b>Tired Of Waiting?</b>
+                                <a class="modal-trigger btn blue waves-effect waves-block" style="vertical-align: middle;text-align: left;margin-top: 12px"
+                                    data-target="modal-share">
+                                    <b>Share With Friends</b> <i class="fa fa-share-alt right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col s12 m12 l4">
+                    <div class="card">
+                        <div class="card-title blue white-text" style="padding:6px;font-size:1.4em">
+                            <b>&nbsp;Drop In </b>
+                            <i class="fas fa-eye-dropper right fa-fw" style="font-size:1em;padding: 6px 8px 0 0;"></i>
+                        </div>
+                        <div class="card-content" style="height: 400px">
+
+                            <p>
+                                <i class="fa fa-fw fa-user tiny"></i> Round <b id="round-drops" class="right"></b>
+                                <br>
+                                <i class="fa fa-fw fa-money-bill-alt"></i> Pay In <b id="round-pay-in" class="right"></b>
+                                <br>
+                                <i class="fa fa-fw fa-trophy"></i> Jackpot <b id="round-jackpot" class="right"></b>
+                            </p>
+
+                            <div id="btn-participate" class="btn waves-effect waves-ripple waves-block blue white-text" style="margin-top: 15px;text-align: left">
+                                <strong style="vertical-align: middle;">
+                                    <b>Participate</b> <i class="fas fa-spin fa-dice-five right"></i>
+                                </strong>
+                            </div>
+
+                            <p style="margin-top: 15px">
+                                <b id="or-send-amnt"></b>
+                            </p>
+
+                            <div id="trx-progress" class="progress right" style="height:2px; width: 100%;margin-top: -2rem;
+                            display: none">
+                                <div class="indeterminate"></div>
+                            </div>
+
+                            <div>
+                                <img class="center-block pad-8" src="res/icons/qrcode.png" style="width:150px; height:150px;vertical-align: middle">
+                            </div>
+                            <div>
+                                <a id="btn-copy-address" class="btn blue waves-effect waves-block" style="vertical-align: middle;text-align: left">
+                                    <b>Copy Address</b> <i class="fa fa-copy right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col s12 m12 l4">
+                    <div class="card">
+                        <div class="card-title blue white-text" style="padding:6px;font-size:1.4em">
+                            <b>&nbsp;Recent Stats</b>
+                            <i class="fas fa-award right fa-fw" style="font-size:1em;padding: 6px 8px 0 0;"></i>
+                        </div>
+
+                        <div class="card-tabs">
+                            <ul class="tabs tabs-fixed-width">
+                                <li class="tab">
+                                    <a href="#global_stats" class="active">
+                                        <i class="fa fa-globe"></i>
+                                    </a>
+                                </li>
+                                <li class="tab">
+                                    <a href="#my_stats">
+                                        <i class="fa fa-user-alt"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="card-content" style="height: 352px">
+                            <div id="my_stats" class="card-stacked">
+                                <div class="collection" id="user_rounds" style="max-height: 400px">
+                                </div>
+                            </div>
+                            <div id="global_stats">
+                                <div class="card-stacked">
+                                    <div id="global_rounds" class="collection with-header">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- modals -->
+        <div id="modal-account" class="modal">
+            <div class="modal-content">
+                <h6><i class="fab fa-fw fa-ethereum"> </i> <b>Ethereum Account</b></h6><br>
+                <div class="row">
+                    <form class="col s12">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="acc_address" type="text">
+                                <label id="acc_label" for="acc_address">
+                                    <i class="fa fa-fw fa-wallet"></i>
+                                    Your Ethereum Wallet Address
+                                </label>
+                                <input id="btn-profile" class="btn modal-close my-dark lighten-3 white-text right" style="margin:8px" type="submit" value="Submit">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal-share" class="modal">
+            <div class="modal-content">
+                <h6><b><i>Loved It? Share It!</i></b></h6><br>
+                <!-- Whatsapp -->
+                <a href="whatsapp://send?text=Check Out http://etherdrop.app and get your ETH drop!" data-action="share/whatsapp/share" class="btn whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+
+                <!-- Facebook -->
+                <a href="http://www.facebook.com/sharer/sharer.php?u=https://etherdrop.app" target="_blank" class="btn facebook">
+                    <i class="fab fa-facebook"></i>
+                </a>
+
+                <!-- Twitter -->
+                <a href="http://twitter.com/share?url=https://etherdrop.app&text=Get Your ETH Drop!&via=EtherDrop" target="_blank" class="btn twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+
+                <!-- Email -->
+                <a href="mailto:?subject=Support&body=support@etherdrop.app" target="_blank" class="btn email">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="modal-close balance waves-effect  btn-flat"><b>CLOSE</b></a>
+            </div>
+        </div>
+
+        <div id="modal-assistant" class="modal">
+            <div class="modal-content">
+                <h4>Help</h4><br>
+                <ul class="collapsible">
+                    <li>
+                        <div class="collapsible-header"><i class="fa fa-tint"></i>What is EtherDrop?</div>
+                        <div class="collapsible-body">
+                            <span>
+                                <b>EtherDrop</b> is an Ethereum giveaway where you enter a lottery draw giving you a chance
+                                to win up a big buff of Ethereum.
+                            </span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><i class="fa fa-play"></i>How Can I Play?</div>
+                        <div class="collapsible-body">
+                            <span>
+                                1. Participate by sending the round's ETH amount<br><br> 2. Wait for the round's droplet
+                                to fill up <br><br> 3. When EtherDrop is full its SmartContract Lottery will pick a winning
+                                number<br><br> 4. If Your Participation Number matches the pick you will <b>WIN</b> the drop<br>
+                            </span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><i class="fa fa-flag-checkered"></i>
+                            How can i verify the results?
+                        </div>
+                        <div class="collapsible-body">
+                            <span>
+                                <b>EtherDrop SmartContract</b> is build <b>on top Ethereum</b> ensuring that the pick is
+                                legitimate and random.
+                                <br> Smart contracts allow the performance of credible transactions without 3rd parties.
+                                <br> You can check etherdrop smart contract on the blockchain by following this link
+                                <a href="https://etherscan.io/address/0x81b1FF50D5Bca9150700e7265F7216e65C8936E6#code"><b>Click
+                                        here</b>.</a>
+                            </span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="modal-close waves-effect  btn-flat"><b>Ok</b></a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="page-footer my-dark darken-2 m-footer" style="padding: 0 8px 0 8px;zoom:0.75;border: 0 solid black;border-top-width: 1px;">
+        <div class="footer-copyright" style="padding: 0">
+            <div class="white-text">
+                <div class="small">
+                    <b>
+                        <a style="vertical-align: middle" class="left pad-8 waves-effect transparent white-text" target="_blank" href="https://etherscan.io/address/0x81b1ff50d5bca9150700e7265f7216e65c8936e6#code">
+                            <i class="fas fa-fw fa-tint"></i>
+                            <i class="fab fa-fw fa-ethereum"></i>
+                            <i class="fas fa-fw fa-dice"></i>
+                        </a>
+                    </b>
+                </div>
+            </div>
+            <div class="white-text">
+
+            </div>
+        </div>
+    </footer>
+
+    <!-- scripts at end -->
+    <script type="text/javascript" src="libs/jquery/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="libs/jquery/jquery-2.1.1.js"></script>
+    <script type="text/javascript" src="libs/jquery/jquery.keyframes.min.js"></script>
+    <script type="text/javascript" src="libs/materialize/js/materialize.min.js"></script>
+    <script type="text/javascript" src="libs/cookie/cookie.js"></script>
+    <script type="text/javascript" src="libs/web3/web3.min.js"></script>
+    <script type="text/javascript" src="js/truffle-contract.js"></script>
+    <script type="text/javascript" src="js/ed-client.js"></script>
+    <script type="text/javascript" src="js/app-init.js"></script>
+    <script type="text/javascript" src="js/app-presenter.js"></script>
+    <script>BetClient.jsonFile = "EtherDrop.json";</script>
+    <script type="text/javascript" src="js/app.js"></script>
+
+</body>
+
+</html>
