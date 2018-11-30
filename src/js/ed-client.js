@@ -37,7 +37,7 @@ BetClient = {
     },
 
     initWeb3: () => {
-        /*if (typeof web3 !== 'undefined') {
+        if (typeof web3 !== 'undefined') {
             BetClient.web3Provider = web3.currentProvider;
         } else {
             if (BetClient.onNoDefaultWeb3Provider) {
@@ -46,10 +46,10 @@ BetClient = {
             let infura = 'https://mainnet.infura.io/plnAtKGtcoxBtY9UpS4b';
             BetClient.web3Provider = new Web3.providers.HttpProvider(infura);
         }
-        else {*/
+        /*else {
             console.log('ganache')
             BetClient.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
-       // }
+       	} */
         web3 = new Web3(BetClient.web3Provider);
         return BetClient.initContract();
     },
